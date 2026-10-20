@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Streamroom — Browser Player</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f4f5f8;background:#090b10;font-synthesis:none;text-rendering:optimizeLegibility;--muted:#9299a8;--line:#242936;--panel:#11141c;--accent:#b6f36b;--purple:#a78bfa}
+    *{box-sizing:border-box}body{margin:0;min-width:320px;background:radial-gradient(ellipse at 16% -10%,#202b34 0,transparent 42%),#090b10;color:#f4f5f8}button,input,select{font:inherit}button{color:inherit;cursor:pointer}.app{max-width:1480px;margin:0 auto;padding:24px clamp(16px,3vw,42px) 34px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:23px}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:39px;height:39px;border-radius:13px;background:var(--accent);display:grid;place-items:center;color:#12170c;box-shadow:0 0 30px #b6f36b25}.brand-mark svg{width:20px}.brand-name{font-size:16px;font-weight:750;letter-spacing:-.03em}.brand-sub{font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:.12em;text-transform:uppercase}.top-pill{font-size:12px;color:#cbd1db;border:1px solid var(--line);border-radius:99px;padding:8px 12px;display:flex;align-items:center;gap:8px}.live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:19px;align-items:start}.main-col{min-width:0}.eyebrow{font-size:11px;color:var(--accent);font-weight:750;letter-spacing:.15em;text-transform:uppercase;margin:0 0 8px}.heading-row{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:0 0 15px}.heading-row h1{font-size:clamp(23px,3vw,34px);letter-spacing:-.055em;line-height:1.12;margin:0;font-weight:720}.heading-row p{font-size:13px;color:var(--muted);margin:8px 0 0}.kbd-hint{font-size:11px;color:#777f8e;white-space:nowrap;padding-bottom:4px}.kbd{border:1px solid #353a47;background:#141720;padding:3px 6px;border-radius:5px;color:#b8bfcb;font-size:10px}
+    .theater{position:relative;overflow:hidden;border-radius:18px;border:1px solid #292e39;background:#030405;box-shadow:0 22px 65px #0007;aspect-ratio:16/9}.theater video{width:100%;height:100%;display:block;object-fit:contain;background:#020304}.video-welcome{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;background:radial-gradient(ellipse at 50% 55%,#20243188,transparent 48%);pointer-events:none}.welcome-inner{max-width:400px}.welcome-icon{width:58px;height:58px;border-radius:19px;border:1px solid #ffffff20;background:#ffffff0a;display:grid;place-items:center;margin:0 auto 16px;color:var(--accent)}.welcome-icon svg{width:25px}.video-welcome h2{font-size:20px;margin:0 0 8px;letter-spacing:-.03em}.video-welcome p{margin:0;color:#a3a9b5;font-size:13px;line-height:1.55}.theater.has-media .video-welcome{display:none}.video-overlay{position:absolute;inset:auto 0 0;background:linear-gradient(transparent,#050609e8 83%);padding:48px 19px 14px;opacity:0;transition:opacity .18s}.theater:hover .video-overlay,.theater:focus-within .video-overlay,.theater.paused .video-overlay{opacity:1}.theater.paused .video-overlay{background:linear-gradient(transparent,#050609ed 83%)}.seek-wrap{height:16px;display:flex;align-items:center;position:relative;cursor:pointer}.seek-track{height:4px;border-radius:8px;background:#ffffff43;width:100%;position:relative;transition:height .14s}.seek-wrap:hover .seek-track{height:6px}.seek-buffer,.seek-progress{position:absolute;inset:0 auto 0 0;border-radius:8px;width:0;background:#ffffff68}.seek-progress{background:var(--accent);z-index:1}.seek-thumb{position:absolute;right:-5px;top:50%;transform:translateY(-50%) scale(0);width:12px;height:12px;border-radius:50%;background:#fff;transition:transform .12s}.seek-wrap:hover .seek-thumb{transform:translateY(-50%) scale(1)}.controls{display:flex;align-items:center;gap:13px;padding-top:5px}.icon-btn{border:0;background:none;padding:5px;color:#edf0f4;display:grid;place-items:center;border-radius:8px}.icon-btn:hover{color:var(--accent);background:#ffffff12}.icon-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.play-btn svg{width:22px;height:22px}.time-readout{font-variant-numeric:tabular-nums;color:#d7dbe2;font-size:11px;white-space:nowrap}.control-spacer{flex:1}.control-select{background:#171a22;border:1px solid #373c47;color:#e1e4ea;border-radius:7px;font-size:11px;padding:6px 25px 6px 8px;max-width:120px;outline:none}.control-select:focus{border-color:var(--accent)}.volume-wrap{display:flex;align-items:center;gap:5px}.volume-slider{width:74px;height:3px;accent-color:var(--accent)}.below{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 3px 0}.now-playing{min-width:0}.now-title{font-size:14px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.now-meta{font-size:11px;color:var(--muted);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.status{font-size:11px;color:#a8afbb;display:flex;align-items:center;gap:7px}.status-mark{width:6px;height:6px;border-radius:50%;background:var(--accent)}.status.error .status-mark{background:#ff7777}.status.busy .status-mark{background:#f4bf65;animation:pulse 1.1s infinite}@keyframes pulse{50%{opacity:.3}}
+    .panel{border:1px solid var(--line);border-radius:16px;background:linear-gradient(150deg,#141720,#101219);overflow:hidden}.panel-head{display:flex;align-items:center;justify-content:space-between;padding:17px 17px 14px}.panel-title{font-size:14px;font-weight:700;letter-spacing:-.02em}.count{font-size:10px;color:var(--muted);border:1px solid #303542;padding:4px 7px;border-radius:99px}.add-form{margin:0 13px 13px;padding:12px;border-radius:11px;background:#0c0f15;border:1px solid #252a35}.field{display:block;width:100%;border:1px solid #2a2f3a;background:#141821;color:#eef0f4;border-radius:7px;padding:9px 10px;font-size:11px;outline:0;margin-bottom:8px}.field::placeholder{color:#717887}.field:focus{border-color:#84b548}.form-row{display:grid;grid-template-columns:1fr auto;gap:8px}.add-btn{border:0;background:var(--accent);color:#12170c;border-radius:7px;padding:0 13px;font-size:11px;font-weight:750;white-space:nowrap}.add-btn:hover{filter:brightness(1.08)}.form-note{font-size:10px;color:#747c89;line-height:1.45;margin:8px 1px 0}.playlist{padding:0 8px 8px;max-height:400px;overflow:auto}.playlist:empty:after{content:"Your queue is empty. Add a video URL above.";display:block;color:#818896;font-size:12px;padding:12px 10px 18px;line-height:1.5}.item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:background .15s}.item:hover{background:#ffffff08}.item.active{background:#b6f36b0c;border-color:#b6f36b2c}.item-index{width:24px;color:#717987;font-size:10px;text-align:center;font-variant-numeric:tabular-nums;flex:none}.item.active .item-index{color:var(--accent)}.item-info{min-width:0;flex:1}.item-name{font-size:11px;font-weight:620;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.item-url{font-size:9px;color:#7c8390;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.remove-btn{opacity:0;border:0;background:none;color:#9299a5;font-size:16px;padding:4px 6px;border-radius:6px}.item:hover .remove-btn,.remove-btn:focus{opacity:1}.remove-btn:hover{color:#ff8585;background:#ff5b5b18}.panel-foot{border-top:1px solid var(--line);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;color:#7f8794;font-size:10px}.clear-btn{border:0;background:none;color:#9098a6;padding:3px}.clear-btn:hover{color:#ff8585}.shortcut-card{margin-top:13px;border:1px solid var(--line);border-radius:13px;background:#10131a;padding:14px 15px}.shortcut-title{font-size:11px;font-weight:700;color:#dfe2e8;margin:0 0 10px}.shortcut-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 9px}.shortcut{display:flex;align-items:center;gap:7px;font-size:10px;color:#9299a7}.shortcut .kbd{min-width:22px;text-align:center}.footer-note{text-align:center;color:#606775;font-size:10px;margin:21px 0 0}
+    @media(max-width:950px){.layout{grid-template-columns:minmax(0,1fr) 290px;gap:13px}.volume-slider{width:52px}.controls{gap:8px}}@media(max-width:760px){.app{padding:16px 13px 24px}.topbar{margin-bottom:19px}.layout{grid-template-columns:1fr}.heading-row{align-items:start}.kbd-hint{display:none}.panel{margin-top:1px}.playlist{max-height:260px}.video-overlay{opacity:1;padding:37px 11px 9px}.controls{gap:5px}.volume-slider{display:none}.control-select{max-width:87px;padding:6px 18px 6px 6px;font-size:10px}.time-readout{font-size:10px}.below{padding-top:12px}.shortcut-card{display:none}}
+    @media(max-width:420px){.controls{gap:2px}.icon-btn{padding:4px}.icon-btn svg{width:17px;height:17px}.volume-wrap{display:none}.control-select{max-width:78px}.top-pill{font-size:10px;padding:7px 9px}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.8c0-.8.9-1.3 1.6-.9l11 7.1a1.2 1.2 0 0 1 0 2L8.6 20a1.1 1.1 0 0 1-1.6-.9V4.8Z"/></svg></div><div><div class="brand-name">Streamroom</div><div class="brand-sub">Your browser player</div></div></div>
+      <div class="top-pill"><span class="live-dot"></span> Ready to play</div>
+    </header>
+    <div class="layout">
+      <section class="main-col" aria-label="Video player">
+        <div class="heading-row"><div><div class="eyebrow">Personal cinema</div><h1>Make room for a good watch.</h1><p>Paste a stream, settle in, and take it at your pace.</p></div><div class="kbd-hint"><span class="kbd">?</span> keyboard shortcuts</div></div>
+        <div class="theater paused" id="theater">
+          <video id="video" playsinline preload="metadata"></video>
+          <div class="video-welcome" id="welcome"><div class="welcome-inner"><div class="welcome-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.8c0-.8.9-1.2 1.6-.8l9.2 5.4a1.8 1.8 0 0 1 0 3.1l-9.2 5.4a.9.9 0 0 1-1.6-.8V5.8Z"/></svg></div><h2>Your next favorite, right here.</h2><p>Choose a sample from your queue or add an MP4 or HLS stream URL to get started.</p></div></div>
+          <div class="video-overlay">
+            <div class="seek-wrap" id="seekWrap" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><div class="seek-track"><div class="seek-buffer" id="buffer"></div><div class="seek-progress" id="progress"><span class="seek-thumb"></span></div></div></div>
+            <div class="controls">
+              <button class="icon-btn play-btn" id="playBtn" aria-label="Play" title="Play / pause (Space)"><svg id="playIcon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5.8c0-.8.9-1.2 1.6-.8l9.2 5.4a1.8 1.8 0 0 1 0 3.1l-9.2 5.4a.9.9 0 0 1-1.6-.8V5.8Z"/></svg></button>
+              <button class="icon-btn" id="backBtn" aria-label="Back 10 seconds" title="Back 10 seconds (←)"><svg viewBox="0 0 24 24"><path d="M4 8v5h5M5.5 13a7.5 7.5 0 1 0 2-5L4 11"/><path d="M12 9v6l3 2"/></svg></button>
+              <button class="icon-btn" id="forwardBtn" aria-label="Forward 10 seconds" title="Forward 10 seconds (→)"><svg viewBox="0 0 24 24"><path d="M20 8v5h-5M18.5 13a7.5 7.5 0 1 1-2-5L20 11"/><path d="M12 9v6l3 2"/></svg></button>
+              <div class="volume-wrap"><button class="icon-btn" id="muteBtn" aria-label="Mute" title="Mute (M)"><svg id="volumeIcon" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></button><input class="volume-slider" id="volume" type="range" min="0" max="1" step=".05" value="1" aria-label="Volume"></div>
+              <span class="time-readout"><span id="currentTime">0:00</span> / <span id="duration">0:00</span></span>
+              <span class="control-spacer"></span>
+              <select class="control-select" id="quality" aria-label="Video quality" title="Video quality"><option value="auto">Quality: Auto</option></select>
+              <select class="control-select" id="captions" aria-label="Subtitles" title="Subtitles"><option value="off">Subtitles: Off</option></select>
+              <select class="control-select" id="speed" aria-label="Playback speed" title="Playback speed"><option value="0.5">0.5×</option><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="1.75">1.75×</option><option value="2">2×</option></select>
+              <button class="icon-btn" id="pipBtn" aria-label="Picture in picture" title="Picture in picture (P)"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="12" y="11" width="6" height="5" rx=".8"/></svg></button>
+              <button class="icon-btn" id="fullscreenBtn" aria-label="Fullscreen" title="Fullscreen (F)"><svg id="fullscreenIcon" viewBox="0 0 24 24"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="below"><div class="now-playing"><div class="now-title" id="nowTitle">Nothing playing yet</div><div class="now-meta" id="nowMeta">Select a video from your queue</div></div><div class="status" id="status"><span class="status-mark"></span><span id="statusText">Ready when you are</span></div></div>
+      </section>
+      <aside>
+        <section class="panel" aria-label="Playlist">
+          <div class="panel-head"><div class="panel-title">Up next</div><div class="count" id="queueCount">0 videos</div></div>
+          <form class="add-form" id="addForm">
+            <input class="field" id="urlInput" type="url" placeholder="Paste a video or .m3u8 URL" required aria-label="Video URL">
+            <div class="form-row"><input class="field" id="titleInput" type="text" placeholder="Give it a name (optional)" aria-label="Video title" style="margin:0"><button class="add-btn" type="submit">＋ Add video</button></div>
+            <details style="margin-top:9px"><summary style="font-size:10px;color:#a1a8b5;cursor:pointer">Add subtitle track <span style="color:#737b89">· optional .vtt URL</span></summary><input class="field" id="subtitleInput" type="url" placeholder="https://example.com/captions.vtt" aria-label="Subtitle track URL" style="margin:8px 0 0"></details>
+            <p class="form-note">MP4, WebM, and HLS streams are supported. HLS playback uses hls.js when the browser needs it.</p>
+          </form>
+          <div class="playlist" id="playlist"></div>
+          <div class="panel-foot"><span>Saved in this browser</span><button class="clear-btn" id="clearBtn" type="button">Clear queue</button></div>
+        </section>
+        <section class="shortcut-card"><h2 class="shortcut-title">Quick controls</h2><div class="shortcut-grid"><div class="shortcut"><span class="kbd">Space</span> Play / pause</div><div class="shortcut"><span class="kbd">← →</span> Seek 10 sec</div><div class="shortcut"><span class="kbd">↑ ↓</span> Volume</div><div class="shortcut"><span class="kbd">M</span> Mute</div><div class="shortcut"><span class="kbd">F</span> Fullscreen</div><div class="shortcut"><span class="kbd">P</span> Picture in picture</div><div class="shortcut"><span class="kbd">C</span> Subtitles</div><div class="shortcut"><span class="kbd">J / L</span> Seek 10 sec</div></div></section>
+      </aside>
+    </div>
+    <p class="footer-note">Your playlist stays on this device. Stream availability depends on the source host.</p>
+  </main>
+  <script>
+  (() => {
+    'use strict';
+    const $ = (id) => document.getElementById(id);
+    const video = $('video'), theater = $('theater'), playlistEl = $('playlist');
+    const STORAGE_KEY = 'streamroom.queue.v1';
+    const samples = [
+      { id: 'sample-bunny', title: 'Big Buck Bunny', url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
+      { id: 'sample-hls', title: 'HLS demo stream', url: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' }
+    ];
+    let queue = loadQueue();
+    let activeId = '';
+    let hls = null;
+    let hlsReady = null;
+    let nativeTrack = null;
+
+    function loadQueue() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (Array.isArray(saved)) return saved.filter(item => item && typeof item.url === 'string' && /^https?:/i.test(item.url));
+      } catch (_) { /* Private browsing or invalid saved data; use the sample queue. */ }
+      return samples.map(item => ({ ...item }));
+    }
+    function saveQueue() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(queue)); } catch (_) {} }
+    function setStatus(message, state = '') { $('statusText').textContent = message; $('status').className = `status ${state}`.trim(); }
+    function safeUrl(value) {
+      try { const parsed = new URL(value); return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : ''; } catch (_) { return ''; }
+    }
+    function shortHost(url) { try { return new URL(url).hostname; } catch (_) { return url; } }
+    function renderQueue() {
+      playlistEl.replaceChildren();
+      $('queueCount').textContent = `${queue.length} ${queue.length === 1 ? 'video' : 'videos'}`;
+      queue.forEach((item, index) => {
+        const row = document.createElement('div'); row.className = `item${item.id === activeId ? ' active' : ''}`; row.tabIndex = 0; row.setAttribute('role', 'button'); row.setAttribute('aria-label', `Play ${item.title || 'video'}`);
+        const number = document.createElement('span'); number.className = 'item-index'; number.textContent = item.id === activeId && !video.paused ? '▶' : String(index + 1).padStart(2, '0');
+        const info = document.createElement('span'); info.className = 'item-info';
+        const name = document.createElement('span'); name.className = 'item-name'; name.textContent = item.title || shortHost(item.url);
+        const url = document.createElement('span'); url.className = 'item-url'; url.textContent = shortHost(item.url);
+        info.append(name, url);
+        const remove = document.createElement('button'); remove.className = 'remove-btn'; remove.type = 'button'; remove.textContent = '×'; remove.setAttribute('aria-label', 'Remove from queue');
+        remove.addEventListener('click', event => { event.stopPropagation(); removeItem(item.id); });
+        row.append(number, info, remove); row.addEventListener('click', () => playItem(item.id));
+        row.addEventListener('keydown', event => { if (event.key === 'Enter') playItem(item.id); }); playlistEl.append(row);
+      });
+    }
+    function removeItem(id) {
+      const wasActive = id === activeId; queue = queue.filter(item => item.id !== id); saveQueue();
+      if (wasActive) { stopPlayback(); activeId = ''; $('nowTitle').textContent = 'Nothing playing yet'; $('nowMeta').textContent = 'Select a video from your queue'; }
+      renderQueue();
+    }
+    function resetOptions() {
+      $('quality').replaceChildren(new Option('Quality: Auto', 'auto'));
+      $('captions').replaceChildren(new Option('Subtitles: Off', 'off'));
+      if (hls) { hls.destroy(); hls = null; }
+      if (nativeTrack) { nativeTrack.remove(); nativeTrack = null; }
+      video.querySelectorAll('track').forEach(track => track.remove());
+    }
+    function stopPlayback() { resetOptions(); video.pause(); video.removeAttribute('src'); video.load(); theater.classList.remove('has-media'); }
+    function addSubtitleTrack(item) {
+      if (!item.subtitle) return;
+      const track = document.createElement('track'); track.kind = 'subtitles'; track.label = item.subtitleLabel || 'Captions'; track.srclang = item.subtitleLanguage || 'en'; track.src = item.subtitle; video.append(track); nativeTrack = track;
+      $('captions').append(new Option('Subtitles: Captions', 'native'));
+    }
+    function loadHlsLibrary() {
+      if (window.Hls) return Promise.resolve(window.Hls);
+      if (hlsReady) return hlsReady;
+      hlsReady = new Promise((resolve, reject) => {
+        const script = document.createElement('script'); script.src = 'https://cdn.jsdelivr.net/npm/hls.js@1'; script.async = true;
+        script.onload = () => window.Hls ? resolve(window.Hls) : reject(new Error('The HLS library could not be initialized.'));
+        script.onerror = () => reject(new Error('Could not load the HLS playback library. Check your network connection.'));
+        document.head.append(script);
+      });
+      return hlsReady;
+    }
+    function populateHlsMenus(instance) {
+      $('quality').replaceChildren(new Option('Quality: Auto', 'auto'));
+      const seen = new Set();
+      instance.levels.forEach((level, index) => {
+        const label = level.height ? `${level.height}p` : level.bitrate ? `${Math.round(level.bitrate / 1000)} kbps` : `Level ${index + 1}`;
+        if (seen.has(label)) return; seen.add(label); const option = new Option(label, String(index)); option.dataset.level = String(index); $('quality').append(option);
+      });
+      $('captions').replaceChildren(new Option('Subtitles: Off', 'off'));
+      instance.subtitleTracks.forEach((track, index) => {
+        const label = track.name || track.lang || `Track ${index + 1}`; $('captions').append(new Option(`Subtitles: ${label}`, `hls:${index}`));
+      });
+      if (nativeTrack) $('captions').append(new Option(`Subtitles: ${nativeTrack.label}`, 'native'));
+    }
+    function playItem(id) {
+      const item = queue.find(entry => entry.id === id); if (!item) return;
+      const url = safeUrl(item.url); if (!url) { setStatus('Use a valid http or https video URL', 'error'); return; }
+      activeId = id; renderQueue(); resetOptions(); video.src = ''; video.load();
+      $('nowTitle').textContent = item.title || shortHost(url); $('nowMeta').textContent = `${shortHost(url)}${/\.m3u8(?:$|\?)/i.test(url) ? ' · HLS stream' : ''}`;
+      theater.classList.add('has-media'); setStatus('Loading stream…', 'busy');
+      addSubtitleTrack(item);
+      const isHls = /\.m3u8(?:$|\?)/i.test(url);
+      if (!isHls) {
+        video.src = url; video.load();
+        video.play().catch(() => setStatus('Ready — press play to start', ''));
+        return;
+      }
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url; video.load();
+        video.addEventListener('loadedmetadata', () => setStatus('HLS stream ready', ''), { once: true });
+        video.play().catch(() => setStatus('HLS ready — press play to start', ''));
+        return;
+      }
+      loadHlsLibrary().then(Hls => {
+        if (!Hls.isSupported()) throw new Error('This browser does not support HLS playback.');
+        const instance = new Hls({ capLevelToPlayerSize: true }); hls = instance;
+        instance.loadSource(url); instance.attachMedia(video);
+        instance.on(Hls.Events.MANIFEST_PARSED, () => {
+          if (hls !== instance) return; populateHlsMenus(instance); setStatus('HLS stream ready', '');
+          video.play().catch(() => setStatus('HLS ready — press play to start', ''));
+        });
+        instance.on(Hls.Events.ERROR, (_event, data) => {
+          if (data.fatal) { setStatus(data.type === Hls.ErrorTypes.NETWORK_ERROR ? 'Stream network error — check the URL or CORS settings' : 'This stream could not be played', 'error'); instance.destroy(); hls = null; }
+        });
+      }).catch(error => setStatus(error.message || 'HLS could not be played', 'error'));
+    }
+    function formatTime(value) { if (!Number.isFinite(value)) return '0:00'; const total = Math.max(0, Math.floor(value)); const hours = Math.floor(total / 3600); const mins = Math.floor((total % 3600) / 60); const secs = total % 60; return hours ? `${hours}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}` : `${mins}:${String(secs).padStart(2, '0')}`; }
+    function togglePlay() { if (!video.src && !hls) { if (queue.length) playItem(queue[0].id); return; } if (video.paused) video.play().catch(() => setStatus('Playback was blocked by the browser', 'error')); else video.pause(); }
+    function seek(delta) { if (Number.isFinite(video.duration)) video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + delta)); }
+    function toggleFullscreen() { if (!document.fullscreenElement) (theater.requestFullscreen?.() || video.webkitEnterFullscreen?.()); else document.exitFullscreen?.(); }
+    async function togglePip() { try { if (document.pictureInPictureElement) await document.exitPictureInPicture(); else if (document.pictureInPictureEnabled && video.readyState >= 1) await video.requestPictureInPicture(); else setStatus('Picture in picture is not available for this video', 'error'); } catch (_) { setStatus('Picture in picture could not start', 'error'); } }
+    function cycleCaptions() { const menu = $('captions'); if (menu.options.length < 2) return; menu.selectedIndex = menu.selectedIndex + 1 >= menu.options.length ? 0 : menu.selectedIndex + 1; menu.dispatchEvent(new Event('change')); }
+    $('addForm').addEventListener('submit', event => {
+      event.preventDefault(); const url = safeUrl($('urlInput').value.trim());
+      if (!url) { $('urlInput').setCustomValidity('Enter a valid http or https media URL.'); $('urlInput').reportValidity(); $('urlInput').setCustomValidity(''); return; }
+      const title = $('titleInput').value.trim() || shortHost(url); const subtitle = safeUrl($('subtitleInput').value.trim());
+      const item = { id: `media-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, title, url };
+      if (subtitle) item.subtitle = subtitle;
+      queue.push(item); saveQueue(); renderQueue(); $('urlInput').value = ''; $('titleInput').value = ''; $('subtitleInput').value = '';
+      playItem(item.id);
+    });
+    $('clearBtn').addEventListener('click', () => { queue = []; activeId = ''; saveQueue(); stopPlayback(); $('nowTitle').textContent = 'Nothing playing yet'; $('nowMeta').textContent = 'Select a video from your queue'; setStatus('Queue cleared'); renderQueue(); });
+    $('playBtn').addEventListener('click', togglePlay); $('backBtn').addEventListener('click', () => seek(-10)); $('forwardBtn').addEventListener('click', () => seek(10));
+    $('muteBtn').addEventListener('click', () => { video.muted = !video.muted; $('volume').value = video.muted ? 0 : video.volume; });
+    $('volume').addEventListener('input', event => { video.volume = Number(event.target.value); video.muted = video.volume === 0; });
+    $('speed').addEventListener('change', event => { video.playbackRate = Number(event.target.value); });
+    $('quality').addEventListener('change', event => { if (!hls) return; if (event.target.value === 'auto') hls.currentLevel = -1; else hls.currentLevel = Number(event.target.value); });
+    $('captions').addEventListener('change', event => {
+      const value = event.target.value;
+      if (hls) { hls.subtitleDisplay = value.startsWith('hls:'); hls.subtitleTrack = value.startsWith('hls:') ? Number(value.slice(4)) : -1; }
+      Array.from(video.textTracks).forEach(track => { track.mode = value === 'native' && track.kind === 'subtitles' ? 'showing' : 'disabled'; });
+    });
+    $('pipBtn').addEventListener('click', togglePip); $('fullscreenBtn').addEventListener('click', toggleFullscreen);
+    $('seekWrap').addEventListener('click', event => { const rect = event.currentTarget.getBoundingClientRect(); if (Number.isFinite(video.duration) && rect.width) video.currentTime = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)) * video.duration; });
+    $('seekWrap').addEventListener('keydown', event => { if (event.key === 'ArrowLeft') seek(-10); if (event.key === 'ArrowRight') seek(10); });
+    video.addEventListener('timeupdate', () => { $('currentTime').textContent = formatTime(video.currentTime); $('progress').style.width = Number.isFinite(video.duration) && video.duration ? `${video.currentTime / video.duration * 100}%` : '0%'; $('seekWrap').setAttribute('aria-valuenow', String(Number.isFinite(video.duration) && video.duration ? Math.round(video.currentTime / video.duration * 100) : 0)); });
+    video.addEventListener('durationchange', () => { $('duration').textContent = formatTime(video.duration); });
+    video.addEventListener('progress', () => { try { if (video.buffered.length && Number.isFinite(video.duration) && video.duration) $('buffer').style.width = `${video.buffered.end(video.buffered.length - 1) / video.duration * 100}%`; } catch (_) {} });
+    video.addEventListener('play', () => { theater.classList.remove('paused'); $('playIcon').innerHTML = '<path d="M7 5h4v14H7zM15 5h4v14h-4z"/>'; $('playBtn').setAttribute('aria-label', 'Pause'); renderQueue(); setStatus('Playing', ''); });
+    video.addEventListener('pause', () => { theater.classList.add('paused'); $('playIcon').innerHTML = '<path d="M8 5.8c0-.8.9-1.2 1.6-.8l9.2 5.4a1.8 1.8 0 0 1 0 3.1l-9.2 5.4a.9.9 0 0 1-1.6-.8V5.8Z"/>'; $('playBtn').setAttribute('aria-label', 'Play'); renderQueue(); if (activeId) setStatus('Paused', ''); });
+    video.addEventListener('loadedmetadata', () => { $('duration').textContent = formatTime(video.duration); if (video.src && !/\.m3u8(?:$|\?)/i.test(video.src)) setStatus('Ready to play', ''); });
+    video.addEventListener('waiting', () => setStatus('Buffering…', 'busy'));
+    video.addEventListener('playing', () => setStatus('Playing', ''));
+    video.addEventListener('ended', () => { const index = queue.findIndex(item => item.id === activeId); if (index >= 0 && queue[index + 1]) playItem(queue[index + 1].id); else setStatus('Finished', ''); });
+    video.addEventListener('error', () => { if (activeId) setStatus('Could not play this media URL', 'error'); });
+    video.addEventListener('volumechange', () => { $('volume').value = video.muted ? 0 : video.volume; $('volumeIcon').innerHTML = video.muted || video.volume === 0 ? '<path d="M11 5 6 9H3v6h3l5 4V5ZM17 9l5 6M22 9l-5 6"/>' : '<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>'; });
+    document.addEventListener('fullscreenchange', () => { $('fullscreenIcon').innerHTML = document.fullscreenElement ? '<path d="M9 4v5H4M15 4v5h5M20 15h-5v5M4 15h5v5"/>' : '<path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"/>'; });
+    document.addEventListener('keydown', event => {
+      if (event.altKey || event.ctrlKey || event.metaKey || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) || document.activeElement.isContentEditable) return;
+      switch (event.key.toLowerCase()) {
+        case ' ': event.preventDefault(); togglePlay(); break;
+        case 'arrowleft': case 'j': seek(-10); break;
+        case 'arrowright': case 'l': seek(10); break;
+        case 'arrowup': event.preventDefault(); video.volume = Math.min(1, video.volume + .05); video.muted = false; break;
+        case 'arrowdown': event.preventDefault(); video.volume = Math.max(0, video.volume - .05); break;
+        case 'm': video.muted = !video.muted; break;
+        case 'f': toggleFullscreen(); break;
+        case 'p': togglePip(); break;
+        case 'c': cycleCaptions(); break;
+      }
+    });
+    renderQueue();
+  })();
+  </script>
+</body>
+</html>
